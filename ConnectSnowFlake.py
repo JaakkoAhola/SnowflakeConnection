@@ -4,25 +4,14 @@
 @author: Jaakko Ahola
 @company:  Virnex Group Oy
 """
-import os
-import sys
 import snowflake.connector
 
-sys.path.append(os.environ["LESMAINSCRIPTS"])
-from FileSystem import FileSystem
-
-
 class ConnectSnowflake:
-    def __init__(self,
-                 connection_name: str,
-                 yaml_file="/home/jamesaloha/Virnex/Snowflake/connections.yaml"):
+    def __init__(self, secrets):
 
-        configures = FileSystem.readYAML(yaml_file)
-        configures_connection = configures[connection_name]
-
-        self.ctx = snowflake.connector.connect(account=configures_connection["account"],
-                                               user=configures_connection["user"],
-                                               password=configures_connection["password"],
+        self.ctx = snowflake.connector.connect(account=secrets["account"],
+                                               user=secrets["user"],
+                                               password=secrets["password"],
                                                )
 
         self.cursor = self.ctx.cursor()
